@@ -1,0 +1,85 @@
+---
+title: Apklis
+description: API principal para verificar compras en Apklis
+---
+
+El objeto `Apklis` (en el paquete `cu.apkuba.sdk.core`) es la entrada principal para interactuar con la tienda **Apklis**. Utiliza **ContentProvider** para consultar el estado de compras de forma asíncrona.
+
+Todos los métodos de `Apklis` son **suspend** y requieren ejecutarse dentro de una corrutina.
+
+## Métodos
+
+### `isPurchased` (Recomendado)
+
+Verifica si un usuario ha comprado una aplicación en Apklis. Detecta automáticamente la versión de Apklis instalada y usa el método apropiado (nuevo o antiguo).
+
+```kotlin
+suspend fun isPurchased(context: Context, applicationId: String): ApklisResponse
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `applicationId` | `String` | Package name de la aplicación a verificar |
+
+**Retorna:** Un `ApklisResponse` con el estado de la compra.
+
+**Ejemplo:**
+
+```kotlin
+lifecycleScope.launch {
+    when (val result = Apklis.isPurchased(this@MainActivity, packageName)) {
+        .isValid() -> showFullApp()
+        .status == PaymentStatus.ERROR -> showError()
+        else -> showPurchaseScreen()
+    }
+}
+```
+
+**Comportamiento:** Detecta la versión de Apklis instalada. Si la versión es >= `20250415` usa el proveedor nuevo, de lo contrario usa el proveedor antiguo.
+
+### `isPurchasedOld`
+
+Usa el ContentProvider antiguo de Apklis.
+
+```kotlin
+suspend fun isPurchasedOld(context: Context, applicationId: String): ApklisResponse
+```
+
+**Provider URI:** `content://cu.uci.android.apklis.payment.provider/app/`
+
+### `isPurchasedNew`
+
+Usa el ContentProvider nuevo de Apklis.
+
+```kotlin
+suspend fun isPurchasedNew(context: Context, packageId: String): ApklisResponse
+```
+
+**Provider URI:** `content://cu.uci.android.apklis.PaymentProvider/app/`
+
+### `isAndUpdate`
+
+Verifica la compra igual que `isPurchased`, con detección automática de versión de Apklis. Acepta un parámetro adicional `currentVersion` para propósitos de versionado.
+
+```kotlin
+suspend fun isAndUpdate(
+    context: Context,
+    applicationId: String,
+    currentVersion: Int
+): ApklisResponse
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `applicationId` | `String` | Package name de la aplicación |
+| `currentVersion` | `Int` | Versión actual de la aplicación |
+
+**Retorna:** Un `ApklisResponse` con el estado de la compra.
+
+## Notas
+
+- Todos los métodos son **asíncronos** (suspend) y usan `GlobalScope.async` internamente.
+- Si Apklis no está instalado, retorna `PaymentStatus.EXCEPTION`.
+- La detección automática entre el proveedor nuevo y antiguo se basa en la versión de la app Apklis instalada (umbral: `20250415`).

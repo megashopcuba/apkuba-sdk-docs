@@ -1,0 +1,83 @@
+---
+title: Validación
+description: Métodos de validación de datos incluidos en Utils
+---
+
+El objeto `Utils` (en `cu.apkuba.sdk.utils`) proporciona varios métodos de validación.
+
+## `validatePackageName`
+
+Valida el formato de un nombre de paquete Android/Java.
+
+```kotlin
+fun validatePackageName(packageName: String): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `packageName` | `String` | Nombre de paquete a validar |
+
+**Reglas de validación:**
+- No debe estar vacío
+- Debe contener al menos un punto (`.`)
+- Cada segmento debe comenzar con una letra y contener solo letras, números y guiones bajos
+
+**Ejemplo:**
+
+```kotlin
+Utils.validatePackageName("com.ejemplo.miapp")  // true
+Utils.validatePackageName("miapp")              // false (sin punto)
+Utils.validatePackageName("")                   // false (vacío)
+```
+
+---
+
+## `validateUUID`
+
+Valida el formato de un UUID (Universally Unique Identifier).
+
+```kotlin
+fun validateUUID(uuidString: String): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `uuidString` | `String` | UUID a validar |
+
+**Ejemplo:**
+
+```kotlin
+Utils.validateUUID("123e4567-e89b-12d3-a456-426614174000")  // true
+Utils.validateUUID("uuid-invalido")                          // false
+```
+
+---
+
+## `validatePublicKeyPEM`
+
+Valida el formato de una clave pública RSA en formato PEM.
+
+```kotlin
+fun validatePublicKeyPEM(pemKey: String): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `pemKey` | `String` | Clave pública PEM a validar |
+
+**Reglas de validación:**
+- No debe estar vacía
+- Debe contener las cabeceras `-----BEGIN PUBLIC KEY-----` y `-----END PUBLIC KEY-----`
+- El contenido Base64 debe ser decodificable y generar una clave RSA válida
+
+**Ejemplo:**
+
+```kotlin
+val pem = """
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA...
+    -----END PUBLIC KEY-----
+""".trimIndent()
+
+Utils.validatePublicKeyPEM(pem)  // true o false
+```

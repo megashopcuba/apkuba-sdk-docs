@@ -1,0 +1,74 @@
+---
+title: Inicio Rápido
+description: Ejemplos básicos de uso de ApKuba SDK
+---
+
+## Verificar compra con ApKuba (Recomendado)
+
+```kotlin
+val result = ApKuba.isPurchased(context, "com.miapp.ejemplo")
+if (result.isValid()) {
+    // El usuario pagó por la app
+    println("Usuario: ${result.userName}")
+} else {
+    // El usuario no ha pagado
+    println("Estado: ${result.status}")
+}
+```
+
+## Verificar compra con Apklis
+
+```kotlin
+lifecycleScope.launch {
+    val result = Apklis.isPurchased(context, "com.miapp.ejemplo")
+    if (result.isValid()) {
+        // Compra verificada
+        showPremiumFeatures()
+    } else {
+        // Mostrar pantalla de compra
+        showPurchaseScreen()
+    }
+}
+```
+
+## Verificar licencia (solo ApKuba)
+
+```kotlin
+val licenseResult = ApKuba.isLicensePurchased(context, "com.miapp.ejemplo")
+if (licenseResult.isValid()) {
+    println("Licencia válida hasta: ${licenseResult.expiredIn}")
+} else {
+    println("Estado de licencia: ${licenseResult.status}")
+}
+```
+
+## Dirigir al usuario a comprar
+
+```kotlin
+// En ApKuba
+Utils.openApKubaLink(context, "com.miapp.ejemplo")
+
+// En Apklis tradicional
+Utils.openApklisLink(context, "com.miapp.ejemplo")
+
+// Comprar licencia
+Utils.openApKubaLicenseLink(
+    context = context,
+    applicationId = "com.miapp.ejemplo",
+    licenseUuid = "tu-uuid-de-licencia",
+    publicKeyPem = "tu-clave-publica-pem"
+)
+```
+
+## Validar datos
+
+```kotlin
+// Validar nombre de paquete
+Utils.validatePackageName("com.ejemplo.miapp") // true
+
+// Validar UUID
+Utils.validateUUID("123e4567-e89b-12d3-a456-426614174000") // true
+
+// Validar clave PEM
+Utils.validatePublicKeyPEM(pemKey) // true/false
+```

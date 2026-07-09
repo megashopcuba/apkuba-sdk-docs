@@ -1,0 +1,107 @@
+---
+title: Navegación
+description: Métodos para abrir enlaces de tiendas y aplicaciones
+---
+
+El objeto `Utils` proporciona métodos para abrir aplicaciones en las tiendas Apklis y ApKuba, y para navegar a enlaces relacionados.
+
+## `openAppLink`
+
+Abre el enlace de compra de una aplicación en la tienda disponible. Prioriza ApKuba sobre Apklis, y si ninguna está instalada, abre la web de Apklis.
+
+```kotlin
+fun openAppLink(context: Context, appPackage: String)
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `appPackage` | `String` | Package name de la aplicación |
+
+**Comportamiento:**
+1. Si ApKuba está instalado → abre en ApKuba
+2. Si Apklis está instalado → abre en Apklis
+3. Si ninguno está instalado → abre en `https://www.apklis.cu/application/{appPackage}`
+
+---
+
+## `openApklisLink`
+
+Abre el enlace de compra de una aplicación en Apklis.
+
+```kotlin
+fun openApklisLink(context: Context, appPackage: String): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `appPackage` | `String` | Package name de la aplicación |
+
+**Retorna:** `true` si se pudo abrir, `false` si no.
+
+---
+
+## `openApKubaLink`
+
+Abre el enlace de compra de una aplicación en ApKuba.
+
+```kotlin
+fun openApKubaLink(context: Context, appPackage: String): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `appPackage` | `String` | Package name de la aplicación |
+
+**Retorna:** `true` si se pudo abrir, `false` si no.
+
+---
+
+## `openApKubaLicenseLink`
+
+Abre el enlace para comprar una licencia específica en ApKuba.
+
+```kotlin
+fun openApKubaLicenseLink(
+    context: Context,
+    applicationId: String,
+    licenseUuid: String,
+    publicKeyPem: String
+): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `applicationId` | `String` | Package name de la aplicación |
+| `licenseUuid` | `String` | UUID de la licencia |
+| `publicKeyPem` | `String` | Clave pública PEM para validación |
+
+**Retorna:** `true` si se pudo abrir, `false` si no.
+
+---
+
+## `openApKubaWeb`
+
+Abre la página web de ApKuba en el navegador.
+
+```kotlin
+fun openApKubaWeb(context: Context)
+```
+
+---
+
+## `openTelegramLink`
+
+Abre un enlace de Telegram, detectando automáticamente el cliente de Telegram instalado (Telegram oficial, Telegram X, Plus Messenger, etc.).
+
+```kotlin
+fun openTelegramLink(context: Context, link: String?)
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `link` | `String?` | Enlace de Telegram a abrir |

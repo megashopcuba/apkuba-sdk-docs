@@ -1,0 +1,132 @@
+---
+title: Estado de aplicaciones
+description: Métodos para verificar el estado de Apklis, ApKuba y otras apps instaladas
+---
+
+El objeto `Utils` proporciona métodos para verificar si las aplicaciones Apklis y ApKuba están instaladas, su versión e integridad.
+
+## `isAppInstalled`
+
+Verifica si una aplicación está instalada en el dispositivo.
+
+```kotlin
+fun isAppInstalled(context: Context, packageName: String): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `packageName` | `String` | Package name de la aplicación |
+
+**Ejemplo:**
+
+```kotlin
+val isApklisInstalled = Utils.isAppInstalled(context, "cu.uci.android.apklis")
+```
+
+---
+
+## `getPackageVersion`
+
+Obtiene la versión (versionCode) de una aplicación instalada.
+
+```kotlin
+fun getPackageVersion(context: Context, packageName: String): Long
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `packageName` | `String` | Package name de la aplicación |
+
+---
+
+## `getApkubaStatus`
+
+Verifica el estado de la aplicación ApKuba en el dispositivo.
+
+```kotlin
+fun getApkubaStatus(context: Context, targetVersion: Long): ApplicationState
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `targetVersion` | `Long` | Versión mínima requerida |
+
+**Retorna:** `ApplicationState` indicando si está instalada correctamente, desactualizada, corrupta o no instalada.
+
+---
+
+## `getApklisStatus`
+
+Verifica el estado de la aplicación Apklis en el dispositivo.
+
+```kotlin
+fun getApklisStatus(context: Context, targetVersion: Long): ApplicationState
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `targetVersion` | `Long` | Versión mínima requerida |
+
+**Retorna:** `ApplicationState` indicando el estado de la aplicación.
+
+---
+
+## `validateApplicationSignature`
+
+Valida la firma de una aplicación instalada contra un hash SHA-384 esperado. Útil para verificar que Apklis o ApKuba no han sido modificados.
+
+```kotlin
+@Throws(PackageManager.NameNotFoundException::class)
+fun validateApplicationSignature(
+    context: Context,
+    packageName: String,
+    expectedHash: String
+): Boolean
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `packageName` | `String` | Package name de la aplicación |
+| `expectedHash` | `String` | Hash SHA-384 esperado de la firma |
+
+---
+
+## `getPackageInfoCompat` (Extension Function)
+
+Extensión de `Context` para obtener información de un paquete de forma compatible con todas las versiones de Android.
+
+```kotlin
+fun Context.getPackageInfoCompat(
+    packageName: String,
+    flags: Int = 0
+): PackageInfo
+```
+
+Usa la API moderna (`PackageManager.PackageInfoFlags`) en Android 13+ y la API clásica en versiones anteriores.
+
+---
+
+## `ApplicationState`
+
+Sealed class que representa el estado de una aplicación (Apklis o ApKuba) en el dispositivo.
+
+```kotlin
+sealed class ApplicationState {
+    data object NotInstalled : ApplicationState()
+    data object Corrupted : ApplicationState()
+    data object Outdated : ApplicationState()
+    data object Ok : ApplicationState()
+}
+```
+
+| Estado | Descripción |
+|---|---|
+| `NotInstalled` | La aplicación no está instalada |
+| `Corrupted` | La aplicación está instalada pero su firma no coincide con la esperada |
+| `Outdated` | La aplicación está instalada pero su versión es menor a la requerida |
+| `Ok` | La aplicación está instalada, actualizada y con firma válida |

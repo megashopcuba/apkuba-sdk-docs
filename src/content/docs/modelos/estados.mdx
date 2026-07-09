@@ -1,0 +1,45 @@
+---
+title: Estados
+description: Enumeraciones de estado para compras y licencias
+---
+
+## `PaymentStatus`
+
+Define los posibles estados de una verificación de compra. Se encuentra en `cu.apkuba.sdk.models`.
+
+```kotlin
+enum class PaymentStatus {
+    NOT_PAYED, PAYED, ERROR, EXCEPTION
+}
+```
+
+| Estado | Descripción |
+|---|---|
+| `NOT_PAYED` | El usuario no ha pagado por la aplicación |
+| `PAYED` | El usuario pagó por la aplicación |
+| `ERROR` | Error al consultar (aplicación no encontrada, etc.) |
+| `EXCEPTION` | Error técnico (sin conexión, error inesperado) |
+
+---
+
+## `LicenseStatus`
+
+Define los posibles estados de una licencia. Se encuentra en `cu.apkuba.sdk.models`.
+
+```kotlin
+enum class LicenseStatus {
+    PENDING, PAYED, EXPIRED, CANCELLED, INVALID, ERROR, SIGNATURE_INVALID, NOT_PAYED
+}
+```
+
+| Estado | Descripción |
+|---|---|
+| `PAYED` | Licencia activa y válida |
+| `PENDING` | Pago pendiente de procesamiento |
+| `EXPIRED` | Licencia expirada |
+| `CANCELLED` | Licencia cancelada |
+| `INVALID` | Licencia inválida |
+| `SIGNATURE_INVALID` | Firma de licencia inválida |
+| `NOT_PAYED` | No se ha realizado el pago |
+| `ERROR` | Error al consultar |
+

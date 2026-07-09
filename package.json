@@ -1,0 +1,16 @@
+{
+  "name": "apkuba-sdk-docs",
+  "version": "1.0.0",
+  "description": "Documentación de ApKuba SDK",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.41.3",
+    "astro": "^7.0.7",
+    "starlight-theme-nova": "^0.12.1"
+  }
+}

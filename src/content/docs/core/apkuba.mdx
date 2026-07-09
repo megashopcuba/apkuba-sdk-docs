@@ -1,0 +1,87 @@
+---
+title: ApKuba
+description: API principal para verificar compras y licencias en ApKuba
+---
+
+El objeto `ApKuba` (en el paquete `cu.apkuba.sdk.core`) es la entrada principal para interactuar con la tienda **ApKuba**. Utiliza **ContentProvider** para consultar el estado de compras y licencias de forma síncrona.
+
+## Métodos
+
+### `isPurchased`
+
+Verifica si un usuario ha comprado una aplicación en ApKuba.
+
+```kotlin
+fun isPurchased(context: Context, applicationId: String): ApklisResponse
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `applicationId` | `String` | Package name de la aplicación a verificar |
+
+**Retorna:** Un `ApklisResponse` con el estado de la compra.
+
+**Ejemplo:**
+
+```kotlin
+val result = ApKuba.isPurchased(this, "com.miapp.ejemplo")
+when {
+    result.isValid() -> {
+        // Usuario pagó
+        showFullApp()
+    }
+    result.status == PaymentStatus.ERROR -> {
+        // Error al consultar
+        showError(result.message?.message)
+    }
+    else -> {
+        // No ha pagado
+        showTrialVersion()
+    }
+}
+```
+
+### `isLicensePurchased`
+
+Verifica si un usuario tiene una licencia activa para una aplicación en ApKuba.
+
+```kotlin
+fun isLicensePurchased(context: Context, packageId: String): ApklisLicenseResponse
+```
+
+| Parámetro | Tipo | Descripción |
+|---|---|---|
+| `context` | `Context` | Contexto de la aplicación |
+| `packageId` | `String` | Package name de la aplicación |
+
+**Retorna:** Un `ApklisLicenseResponse` con el estado, UUID de licencia y fecha de expiración.
+
+**Ejemplo:**
+
+```kotlin
+val response = ApKuba.isLicensePurchased(this, packageName)
+when (response.status) {
+    LicenseStatus.PAYED -> {
+        // Licencia activa
+        val expiresIn = response.expiredIn
+    }
+    LicenseStatus.EXPIRED -> {
+        // Licencia expirada
+    }
+    LicenseStatus.PENDING -> {
+        // Pago pendiente
+    }
+    else -> {
+        // Otro estado
+    }
+}
+```
+
+## Notas
+
+- Ambos métodos son **síncronos** (no requieren corrutinas).
+- Internamente consultan el ContentProvider de ApKuba:
+  - `content://cu.apkuba.payment.provider/app/` para compras
+  - `content://cu.apkuba.license.Provider/licenses/` para licencias
+- Si ApKuba no está instalado, el método capturará la excepción y retornará un estado `ERROR` o `EXCEPTION`.

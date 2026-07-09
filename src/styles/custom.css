@@ -1,0 +1,22 @@
+@layer starlight, nova, custom;
+
+@layer custom {
+  :root {
+    --sl-hue-accent: 214;
+    --sl-color-accent: #076df2;
+    --sl-color-accent-high: #3d71d9;
+    --sl-color-accent-low: #d92534;
+  }
+
+  [data-theme="light"] {
+    --sl-color-accent: #076df2;
+    --sl-color-accent-high: #3d71d9;
+    --sl-color-accent-low: #d92534;
+  }
+
+  [data-theme="dark"] {
+    --sl-color-accent: #3d71d9;
+    --sl-color-accent-high: #076df2;
+    --sl-color-accent-low: #d92534;
+  }
+}
