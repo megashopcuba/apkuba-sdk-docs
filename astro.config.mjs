@@ -8,6 +8,15 @@ export default defineConfig({
   outDir: "dist",
   publicDir: "public",
   srcDir: "src",
+  vite: {
+    ssr: {
+      external: ['typescript', '@shikijs/twoslash'],
+    },
+    define: {
+      __filename: '""',
+      __dirname: '""',
+    }
+  },
   integrations: [
     starlight({
       title: "ApKuba SDK",
