@@ -4,7 +4,7 @@ import starlightThemeNova from "starlight-theme-nova";
 
 export default defineConfig({
   site: "https://megashopcuba.github.io",
-  base: '/apkuba-sdk-docs',
+  // base: '/apkuba-sdk-docs',
   outDir: "dist",
   publicDir: "public",
   srcDir: "src",
