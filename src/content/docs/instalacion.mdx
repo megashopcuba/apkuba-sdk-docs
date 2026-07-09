@@ -4,17 +4,20 @@ description: Cómo agregar ApKuba SDK a tu proyecto Android
 ---
 
 import { Tabs, TabItem } from "@astrojs/starlight/components";
+import GradleInstall from '@/components/GradleInstall.astro';
+
+
 
 ## Repositorio
 
-Agrega JitPack como repositorio en tu archivo de configuración de Gradle.
+Agrega el repositorio de MegaShopCuba en tu archivo de configuración de Gradle.
 
 <Tabs>
   <TabItem label="settings.gradle.kts (Kotlin DSL)">
     ```kotlin
     dependencyResolutionManagement {
         repositories {
-            maven { url = uri("https://jitpack.io") }
+            maven { url = uri("https://repo.megashopcuba.com/releases") }
         }
     }
     ```
@@ -25,7 +28,7 @@ Agrega JitPack como repositorio en tu archivo de configuración de Gradle.
         repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
         repositories {
             mavenCentral()
-            maven { url 'https://jitpack.io' }
+            maven { url 'https://repo.megashopcuba.com/releases' }
         }
     }
     ```
@@ -36,27 +39,12 @@ Agrega JitPack como repositorio en tu archivo de configuración de Gradle.
 
 Agrega la dependencia en el archivo `build.gradle.kts` (o `build.gradle`) de tu módulo **app**.
 
-<Tabs>
-  <TabItem label="build.gradle.kts (Kotlin DSL)">
-    ```kotlin
-    dependencies {
-        implementation("com.github.megashopcuba:apkuba-sdk:LATEST_VERSION")
-    }
-    ```
-  </TabItem>
-  <TabItem label="build.gradle (Groovy)">
-    ```groovy
-    dependencies {
-        implementation 'com.github.megashopcuba:apkuba-sdk:LATEST_VERSION'
-    }
-    ```
-  </TabItem>
-</Tabs>
-
-Reemplaza `LATEST_VERSION` con la versión indicada en el badge de JitPack:
-
-[![](https://jitpack.io/v/megashopcuba/apkuba-sdk.svg)](https://jitpack.io/#megashopcuba/apkuba-sdk)
-
+<GradleInstall
+  repo="https://repo.megashopcuba.com/releases"
+  groupId="cu.apkuba.sdk"
+  artifactId="apkuba-sdk"
+/>
+ 
 ## Requisitos
 
 - Android API 21+ (Android 5.0 Lollipop)

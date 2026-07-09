@@ -1,0 +1,62 @@
+---
+import {  Tabs, TabItem } from "@astrojs/starlight/components";
+import { getLatestVersion } from "@/lib/maven";
+import Code from "starlight-theme-nova/components/Code.astro";
+
+interface Props {
+  repo: string;
+  groupId: string;
+  artifactId: string;
+}
+
+const { repo, groupId, artifactId } = Astro.props;
+
+const version = await getLatestVersion(repo, groupId, artifactId);
+
+const kotlin = `dependencies {
+    implementation("${groupId}:${artifactId}:${version}")
+}`;
+
+const groovy = `dependencies {
+    implementation '${groupId}:${artifactId}:${version}'
+}`;
+---
+
+<Tabs>
+  <TabItem label="build.gradle.kts (Kotlin DSL)">
+    <Code code={kotlin} lang="kotlin" />
+  </TabItem>
+
+  <TabItem label="build.gradle (Groovy)">
+    <Code code={groovy} lang="groovy" />
+  </TabItem>
+</Tabs>
+
+<div class="version-badge">
+  <span>Latest</span>
+  <strong>{version}</strong>
+</div>
+
+<style>
+.version-badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  overflow: hidden;
+  font-family: system-ui;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.version-badge span {
+  background: #444;
+  color: white;
+  padding: .45rem .75rem;
+}
+
+.version-badge strong {
+  background: #2563eb;
+  color: white;
+  padding: .45rem .75rem;
+}
+</style>
