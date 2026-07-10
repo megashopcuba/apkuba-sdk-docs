@@ -4,7 +4,6 @@ import starlightThemeNova from "starlight-theme-nova";
 
 export default defineConfig({
   site: "https://megashopcuba.github.io",
-  // base: '/apkuba-sdk-docs',
   outDir: "dist",
   publicDir: "public",
   srcDir: "src",
@@ -30,21 +29,13 @@ export default defineConfig({
       defaultLocale: "es",
       social: [
         {
-          icon: "github",
-          label: "GitHub",
-          href: "https://github.com/megashopcuba/apkuba-sdk",
+          icon: "telegram",
+          label: "Telegram",
+          href: "https://t.me/apkuba",
         },
       ],
       plugins: [
-        starlightThemeNova({
-          nav: [
-            {
-              label: "GitHub",
-              href: "https://github.com/megashopcuba/apkuba-sdk",
-            },
-            { label: "Telegram", href: "https://t.me/apkuba" },
-          ],
-        }),
+        starlightThemeNova(),
       ],
       components: {
         Pagination: "./src/components/CustomPagination.astro",
